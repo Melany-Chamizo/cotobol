@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentos Oficiales - Colegio de Topógrafos La Paz</title>
+    <link rel="stylesheet" href="estilos.css">
+    <style>
+        /* Estilos específicos para la página de documentos */
+        .documentos-container {
+            padding: 3rem 0;
+        }
+        
+        .documentos-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .documentos-header h1 {
+            color: #003366;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .documentos-header p {
+            color: #555;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .documentos-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: #555;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn.active {
+            color: #003366;
+            font-weight: bold;
+        }
+        
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #d4af37;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .documento-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s;
+            border-left: 4px solid #d4af37;
+        }
+        
+        .documento-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .documento-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .documento-title {
+            font-size: 1.2rem;
+            color: #003366;
+            margin: 0;
+        }
+        
+        .documento-date {
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        .documento-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .documento-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #555;
+        }
+        
+        .documento-meta i {
+            color: #d4af37;
+        }
+        
+        .documento-desc {
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+        
+        .documento-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn-documento {
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-ver {
+            background: #003366;
+            color: white;
+        }
+        
+        .btn-descargar {
+            background: #d4af37;
+            color: #003366;
+        }
+        
+        .search-box {
+            margin-bottom: 2rem;
+            display: flex;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 1rem;
+        }
+        
+        .search-btn {
+            background: #003366;
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        .documento-category {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #555;
+            margin-right: 0.5rem;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .documento-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .documento-meta {
+                flex-wrap: wrap;
+            }
+            
+            .documentos-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab-btn {
+                padding: 0.8rem 1rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="uploads/images.jpg" alt="Logo Colegio Topógrafos La Paz">
+                    <div class="logo-text">
+                        <h1>Colegio de Topógrafos</h1>
+                        <p>Departamento de La Paz - Bolivia</p>
+                    </div>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Inicio</a>
+                    <a href="quienes-somos.html">Quiénes Somos</a>
+                    <a href="proyectos.html">Proyectos</a>
+                    <a href="noticia.html">Noticias</a>
+                    <a href="avisos.html" class="active">Avisos</a>
+                    <a href="contacto.html">Contacto</a>
+                </div>
+                <a href="login.html" class="login-btn">Área de Colegiados</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="container documentos-container">
+        <div class="documentos-header">
+            <h1>Documentos Oficiales</h1>
+            <p>En esta sección encontrará todas las resoluciones, actas y avisos oficiales emitidos por el Colegio de Topógrafos del Departamento de La Paz.</p>
+        </div>
+        
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="Buscar documentos...">
+            <button class="search-btn">Buscar</button>
+        </div>
+        
+        <div class="documentos-tabs">
+            <button class="tab-btn active" data-tab="avisos">Avisos</button>
+            <button class="tab-btn" data-tab="resoluciones">Resoluciones</button>
+            <button class="tab-btn" data-tab="actas">Actas</button>
+            <button class="tab-btn" data-tab="normativas">Normativas</button>
+        </div>
+        
+        <!-- Avisos -->
+        <div id="avisos" class="tab-content active">
+            <div class="documento-card">
+                <div class="documento-header">
+                    <h3 class="documento-title">Convocatoria a Asamblea General Ordinaria 2024</h3>
+                    <span class="documento-date">15 de Junio, 2024</span>
+                </div>
+                <div class="documento-meta">
+                    <span><i>📅</i> Publicado: 10/06/2024</span>
+                    <span><i>📌</i> Categoría: <span class="documento-category">Asamblea</span></span>
+                    <span><i>🔖</i> N° 045/2024</span>
+                </div>
+                <p class="documento-desc">Se convoca a todos los colegiados a la Asamblea General Ordinaria que se realizará el día 30 de junio de 2024 en el Auditorio Principal del Colegio a horas 9:00 AM.</p>
+                <div class="documento-actions">
+                    <a href="#" class="btn-documento btn-ver">📄 Ver Documento</a>
+                    <a href="#" class="btn-documento btn-descargar">⬇️ Descargar</a>
+                </div>
+            </div>
+            
+            <div class="documento-card">
+                <div class="documento-header">
+                    <h3 class="documento-title">Suspensión de actividades por feriado departamental</h3>
+                    <span class="documento-date">10 de Junio, 2024</span>
+                </div>
+                <div class="documento-meta">
+                    <span><i>📅</i> Publicado: 05/06/2024</span>
+                    <span><i>📌</i> Categoría: <span class="documento-category">Administrativo</span></span>
+                    <span><i>🔖</i> N° 042/2024</span>
+                </div>
+                <p class="documento-desc">Se informa a todos los colegiados que las oficinas del Colegio permanecerán cerradas los días 16 y 17 de julio con motivo del feriado departamental.</p>
+                <div class="documento-actions">
+                    <a href="#" class="btn-documento btn-ver">📄 Ver Documento</a>
+                    <a href="#" class="btn-documento btn-descargar">⬇️ Descargar</a>
+                </div>
+            </div>
+            
+            <div class="documento-card">
+                <div class="documento-header">
+                    <h3 class="documento-title">Apertura de inscripciones para curso de drones aplicados a topografía</h3>
+                    <span class="documento-date">5 de Junio, 2024</span>
+                </div>
+                <div class="documento-meta">
+                    <span><i>📅</i> Publicado: 01/06/2024</span>
+                    <span><i>📌</i> Categoría: <span class="documento-category">Capacitación</span></span>
+                    <span><i>🔖</i> N° 038/2024</span>
+                </div>
+                <p class="documento-desc">Se informa que están abiertas las inscripciones para el curso "Fotogrametría con Drones aplicada a Topografía" que se realizará del 15 al 20 de julio. Cupos limitados.</p>
+                <div class="documento-actions">
+                    <a href="#" class="btn-documento btn-ver">📄 Ver Documento</a>
+                    <a href="#" class="btn-documento btn-descargar">⬇️ Descargar</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Resoluciones -->
+        <div id="resoluciones" class="tab-content">
+            <div class="documento-card">
+                <div class="documento-header">
+                    <h3 class="documento-title">Resolución N° 125/2024 - Actualización de aranceles de colegiación</h3>
+                    <span class="documento-date">28 de Mayo, 2024</span>
+                </div>
+                <div class="documento-meta">
+                    <span><i>📅</i> Publicado: 25/05/2024</span>
+                    <span><i>📌</i> Categoría: <span class="documento-category">Administrativo</span></span>
+                    <span><i>🔖</i> N° 125/2024</span>
+                </div>
+                <p class="documento-desc">Resolución mediante la cual se actualizan los aranceles de colegiación para el segundo semestre del año 2024, según lo acordado en la última reunión del Consejo Directivo.</p>
+                <div class="documento-actions">
+                    <a href="#" class="btn-documento btn-ver">📄 Ver Documento</a>
+                    <a href="#" class="btn-documento btn-descargar">⬇️ Descargar</a>
+                </div>
+            </div>
+            
+            <div class="documento-card">
+                <div class="documento-header">
+                    <h3 class="documento-title">Resolución N° 112/2024 - Normas para ejercicio profesional</h3>
+                    <span class="documento-date">15 de Mayo, 2024</span>
+                </div>
+                <div class="documento-meta">
+                    <span><i>📅</i> Publicado: 10/05/2024</span>
+                    <span><i>📌</i> Categoría: <span class="documento-category">Profesional</span></span>
+                    <span><i>🔖</i> N° 112/2024</span>
+                </div>
+                <p class="documento-desc">Establécese las normas actualizadas para el ejercicio profesional de la topografía en el Departamento de La Paz, conforme a la nueva legislación nacional.</p>
+                <div class="documento-actions">
+                    <a href="#" class="btn-documento btn-ver">📄 Ver Documento</a>
+                    <a href="#" class="btn-documento btn-descargar">⬇️ Descargar</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Actas -->
+        <div id="actas" class="tab-content">
+            <div class="documento-card">
+                <div class="documento-header">
+                    <h3 class="documento-title">Acta de Reunión del Consejo Directivo - Mayo 2024</h3>
+                    <span class="documento-date">30 de Mayo, 2024</span>
+                </div>
+                <div class="documento-meta">
+                    <span><i>📅</i> Publicado: 28/05/2024</span>
+                    <span><i>📌</i> Categoría: <span class="documento-category">Consejo Directivo</span></span>
+                    <span><i>🔖</i> Acta N° 15/2024</span>
+                </div>
+                <p class="documento-desc">Acta de la reunión ordinaria del Consejo Directivo realizada el 25 de mayo de 2024, donde se trataron los puntos: actualización de aranceles, plan de capacitación y renovación de equipos.</p>
+                <div class="documento-actions">
+                    <a href="#" class="btn-documento btn-ver">📄 Ver Documento</a>
+                    <a href="#" class="btn-documento btn-descargar">⬇️ Descargar</a>
+                </div>
+            </div>
+            
+            <div class="documento-card">
+                <div class="documento-header">
+                    <h3 class="documento-title">Acta de Asamblea General Ordinaria - Abril 2024</h3>
+                    <span class="documento-date">10 de Abril, 2024</span>
+                </div>
+                <div class="documento-meta">
+                    <span><i>📅</i> Publicado: 05/04/2024</span>
+                    <span><i>📌</i> Categoría: <span class="documento-category">Asamblea</span></span>
+                    <span><i>🔖</i> Acta N° 08/2024</span>
+                </div>
+                <p class="documento-desc">Acta de la Asamblea General Ordinaria realizada el 5 de abril de 2024, donde se aprobó el informe de gestión, balance financiero y plan de trabajo para el presente año.</p>
+                <div class="documento-actions">
+                    <a href="#" class="btn-documento btn-ver">📄 Ver Documento</a>
+                    <a href="#" class="btn-documento btn-descargar">⬇️ Descargar</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Normativas -->
+        <div id="normativas" class="tab-content">
+            <div class="documento-card">
+                <div class="documento-header">
+                    <h3 class="documento-title">Reglamento de Ética Profesional</h3>
+                    <span class="documento-date">1 de Enero, 2024</span>
+                </div>
+                <div class="documento-meta">
+                    <span><i>📅</i> Publicado: 15/12/2023</span>
+                    <span><i>📌</i> Categoría: <span class="documento-category">Ética</span></span>
+                    <span><i>🔖</i> Reglamento N° 001/2023</span>
+                </div>
+                <p class="documento-desc">Reglamento de Ética Profesional del Colegio de Topógrafos del Departamento de La Paz, actualizado según las últimas disposiciones nacionales.</p>
+                <div class="documento-actions">
+                    <a href="#" class="btn-documento btn-ver">📄 Ver Documento</a>
+                    <a href="#" class="btn-documento btn-descargar">⬇️ Descargar</a>
+                </div>
+            </div>
+            
+            <div class="documento-card">
+                <div class="documento-header">
+                    <h3 class="documento-title">Normas Técnicas para Levantamientos Topográficos</h3>
+                    <span class="documento-date">15 de Marzo, 2023</span>
+                </div>
+                <div class="documento-meta">
+                    <span><i>📅</i> Publicado: 10/03/2023</span>
+                    <span><i>📌</i> Categoría: <span class="documento-category">Técnica</span></span>
+                    <span><i>🔖</i> Norma N° 005/2023</span>
+                </div>
+                <p class="documento-desc">Normas técnicas actualizadas para la realización de levantamientos topográficos en el Departamento de La Paz, con especificaciones sobre precisiones y metodologías.</p>
+                <div class="documento-actions">
+                    <a href="#" class="btn-documento btn-ver">📄 Ver Documento</a>
+                    <a href="#" class="btn-documento btn-descargar">⬇️ Descargar</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Colegio de Topógrafos</h3>
+                    <p>Entidad encargada de agremiar, regular y representar a los profesionales en topografía del Departamento de La Paz, Bolivia.</p>
+                    <div class="social-links">
+                        <a href="#"><i>📱</i></a>
+                        <a href="#"><i>💻</i></a>
+                        <a href="#"><i>📹</i></a>
+                        <a href="#"><i>📧</i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="inicio.html">Inicio</a></li>
+                        <li><a href="quienes-somos.html">Quiénes Somos</a></li>
+                        <li><a href="proyectos.html">Proyectos</a></li>
+                        <li><a href="noticia.html">Noticias</a></li>
+                        <li><a href="documentos.html">Documentos</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Documentos</h3>
+                    <ul class="footer-links">
+                        <li><a href="documentos.html?tab=avisos">Avisos</a></li>
+                        <li><a href="documentos.html?tab=resoluciones">Resoluciones</a></li>
+                        <li><a href="documentos.html?tab=actas">Actas</a></li>
+                        <li><a href="documentos.html?tab=normativas">Normativas</a></li>
+                        <li><a href="#">Estatutos</a></li>
+                        <li><a href="#">Reglamentos</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contacto</h3>
+                    <ul class="footer-links">
+                        <li><i>📌</i> Av. Arce N° 1234, La Paz</li>
+                        <li><i>📞</i> +591 2 1234567</li>
+                        <li><i>📱</i> +591 71234567</li>
+                        <li><i>✉️</i> contacto@topografoslapaz.org.bo</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2024 Colegio de Topógrafos del Departamento de La Paz - Bolivia. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Funcionalidad de las pestañas
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remover clase active de todos los botones y contenidos
+                    tabBtns.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Agregar clase active al botón clickeado
+                    this.classList.add('active');
+                    
+                    // Mostrar el contenido correspondiente
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Buscar parámetros en la URL para mostrar una pestaña específica
+            const urlParams = new URLSearchParams(window.location.search);
+            const tabParam = urlParams.get('tab');
+            
+            if(tabParam && document.getElementById(tabParam)) {
+                // Remover clase active de todos
+                tabBtns.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Activar la pestaña correspondiente
+                document.querySelector(`.tab-btn[data-tab="${tabParam}"]`).classList.add('active');
+                document.getElementById(tabParam).classList.add('active');
+            }
+            
+            // Funcionalidad de búsqueda
+            const searchInput = document.querySelector('.search-input');
+            const searchBtn = document.querySelector('.search-btn');
+            
+            searchBtn.addEventListener('click', function() {
+                const searchTerm = searchInput.value.toLowerCase();
+                if(searchTerm.trim() === '') return;
+                
+                const documentos = document.querySelectorAll('.documento-card');
+                let found = false;
+                
+                documentos.forEach(doc => {
+                    const text = doc.textContent.toLowerCase();
+                    if(text.includes(searchTerm)) {
+                        doc.style.display = 'block';
+                        found = true;
+                        // Resaltar coincidencia (opcional)
+                        doc.style.animation = 'highlight 1.5s';
+                    } else {
+                        doc.style.display = 'none';
+                    }
+                });
+                
+                if(!found) {
+                    alert('No se encontraron documentos con ese término de búsqueda');
+                }
+            });
+            
+            // Permitir buscar con Enter
+            searchInput.addEventListener('keyup', function(e) {
+                if(e.key === 'Enter') {
+                    searchBtn.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

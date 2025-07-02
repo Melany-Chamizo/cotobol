@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estilos.css">
+    <title>Document</title>
+</head>
+<header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="uploads/images.jpg" alt="Logo Colegio Topógrafos La Paz">
+                    <div class="logo-text">
+                        <h1>Colegio de Topógrafos</h1>
+                        <p>Departamento de La Paz - Bolivia</p>
+                    </div>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Inicio</a>
+                    <a href="quienes-somos.html">Quiénes Somos</a>
+                    <a href="galeria.html">Galeria Fotos</a>
+                    <a href="noticia.html">Noticias</a>
+                    <a href="contacto.html">Contacto</a>
+                </div>
+                <a href="login.html" class="login-btn">Área de Colegiados</a>
+            </nav>
+        </div>
+    </header>
+<body>
+    
+
+<!-- Contacto -->
+    <section id="contacto">
+        <div class="container">
+            <h2 class="section-title">Contacto</h2>
+            <div class="contact-form">
+                <div class="contact-info">
+                    <h3>Información de Contacto</h3>
+                    <p>Estamos para servirte. Contáctanos para cualquier consulta sobre colegiación, servicios o actividades.</p>
+                    
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i>📌</i>
+                            </div>
+                            <div>
+                                <h4>Dirección</h4>
+                                <p>Av. Arce N° 1234, Edificio Topografía, Piso 3<br>La Paz, Bolivia</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i>📞</i>
+                            </div>
+                            <div>
+                                <h4>Teléfonos</h4>
+                                <p>+591 2 1234567<br>+591 71234567</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i>✉️</i>
+                            </div>
+                            <div>
+                                <h4>Correo Electrónico</h4>
+                                <p>contacto@topografoslapaz.org.bo<br>info@topografoslapaz.org.bo</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- En contacto.html, mejora el formulario -->
+                <form id="contactForm" action="enviar_contacto.php" method="POST">
+                    <div class="form-group">
+                        <label for="name">Nombre Completo</label>
+                        <input type="text" id="name" name="name" required placeholder="Ingrese su nombre completo">
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="email">Correo Electrónico</label>
+                        <input type="email" id="email" name="email" required placeholder="ejemplo@dominio.com">
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="phone">Teléfono/Celular</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+591 XXX XXX XXX">
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="subject">Asunto</label>
+                        <select id="subject" name="subject" required>
+                            <option value="" disabled selected>Seleccione un tema</option>
+                            <option value="colegiacion">Colegiación</option>
+                            <option value="cursos">Cursos y Capacitaciones</option>
+                            <option value="proyectos">Servicios Profesionales</option>
+                            <option value="otros">Otros</option>
+                        </select>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="message">Mensaje</label>
+                        <textarea id="message" name="message" required placeholder="Escriba su mensaje aquí..."></textarea>
+                    </div>
+    
+                    <button type="submit" class="submit-btn">
+                        <span class="btn-text">Enviar Mensaje</span>
+                        <span class="btn-icon">→</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Colegio de Topógrafos</h3>
+                    <p>Entidad encargada de agremiar, regular y representar a los profesionales en topografía del Departamento de La Paz, Bolivia.</p>
+                    <div class="social-links">
+                        <a href="#"><i>📱</i></a>
+                        <a href="#"><i>💻</i></a>
+                        <a href="#"><i>📹</i></a>
+                        <a href="#"><i>📧</i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="inicio.html">Inicio</a></li>
+                        <li><a href="quienes-somos.html">Quiénes Somos</a></li>
+                        <li><a href="galeria.html">Galeria Fotos</a>
+                        <li><a href="noticia.html">Noticias</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Servicios</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Colegiación Profesional</a></li>
+                        <li><a href="#">Capacitaciones</a></li>
+                        <li><a href="#">Asesoría Legal</a></li>
+                        <li><a href="#">Bolsa de Trabajo</a></li>
+                        <li><a href="#">Publicaciones Técnicas</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Estatutos Orgánicos</a></li>
+                        <li><a href="#">Reglamentos</a></li>
+                        <li><a href="#">Normativa Vigente</a></li>
+                        <li><a href="#">Protección de Datos</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2024 Colegio de Topógrafos del Departamento de La Paz - Bolivia. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Proyectos Georreferenciados</title>
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; color: #003366;">Proyectos de Colegiados en La Paz</h1>
+    <!-- En mapa.html, mejora el mapa -->
+<div id="map-container">
+    <div id="map"></div>
+    <div id="map-legend">
+        <h4>Leyenda de Proyectos</h4>
+        <ul>
+            <li><span class="legend-icon" style="background-color: #FF5252;"></span> Proyectos Catastrales</li>
+            <li><span class="legend-icon" style="background-color: #4CAF50;"></span> Proyectos Mineros</li>
+            <li><span class="legend-icon" style="background-color: #2196F3;"></span> Proyectos Viales</li>
+            <li><span class="legend-icon" style="background-color: #FFC107;"></span> Proyectos Urbanos</li>
+        </ul>
+    </div>
+</div>
+    <script>
+        function initMap() {
+            const laPaz = { lat: -16.4897, lng: -68.1193 };
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 12,
+                center: laPaz,
+            });
+            
+            // Marcadores de proyectos (ejemplo)
+            const proyectos = [
+                {
+                    position: { lat: -16.4897, lng: -68.1193 },
+                    title: "Cartografía Urbana - Centro de La Paz",
+                    desc: "Levantamiento con drones en el casco viejo."
+                },
+                {
+                    position: { lat: -16.5299, lng: -68.0856 },
+                    title: "Catastro Rural - Zona Sur",
+                    desc: "Delimitación de terrenos con GPS RTK."
+                }
+            ];
+            
+            proyectos.forEach(proyecto => {
+                new google.maps.Marker({
+                    position: proyecto.position,
+                    map,
+                    title: proyecto.title,
+                }).addListener("click", () => {
+                    new google.maps.InfoWindow({
+                        content: `<h3>${proyecto.title}</h3><p>${proyecto.desc}</p>`
+                    }).open(map, this);
+                });
+            });
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=TU_API_KEY&callback=initMap" async defer></script>
+</body>
+</html>

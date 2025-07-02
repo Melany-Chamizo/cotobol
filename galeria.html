@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería de Fotos - Colegio de Topógrafos La Paz</title>
+    <link rel="stylesheet" href="estilos.css">
+    <style>
+        /* Estilos específicos para la galería */
+        .gallery-container {
+            padding: 3rem 0;
+        }
+        
+        .gallery-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .gallery-header h1 {
+            color: #003366;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .gallery-header p {
+            color: #555;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .gallery-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .gallery-tab-btn {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: #555;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .gallery-tab-btn.active {
+            color: #003366;
+            font-weight: bold;
+        }
+        
+        .gallery-tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #d4af37;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .gallery-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            aspect-ratio: 4/3;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .gallery-item:hover .gallery-img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,51,102,0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1rem;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        
+        .gallery-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .gallery-date {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .search-box {
+            margin-bottom: 2rem;
+            display: flex;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 1rem;
+        }
+        
+        .search-btn {
+            background: #003366;
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        
+        .modal-img {
+            width: 100%;
+            height: auto;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        
+        .modal-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: white;
+            padding: 1rem;
+            background: rgba(0,0,0,0.7);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .gallery-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .gallery-tab-btn {
+                padding: 0.8rem 1rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <img src="uploads/images.jpg" alt="Logo Colegio Topógrafos La Paz">
+                    <div class="logo-text">
+                        <h1>Colegio de Topógrafos</h1>
+                        <p>Departamento de La Paz - Bolivia</p>
+                    </div>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Inicio</a>
+                    <a href="quienes-somos.html">Quiénes Somos</a>
+                    <a href="proyectos.html">Proyectos</a>
+                    <a href="noticia.html">Noticias</a>
+                    <a href="avisos.html">Avisos</a>
+                    <a href="galeria.html" class="active">Galería</a>
+                    <a href="contacto.html">Contacto</a>
+                </div>
+                <a href="login.html" class="login-btn">Área de Colegiados</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="container gallery-container">
+        <div class="gallery-header">
+            <h1>Galería de Fotos</h1>
+            <p>Revive los momentos más importantes de nuestras actividades, eventos y proyectos realizados por el Colegio de Topógrafos del Departamento de La Paz.</p>
+        </div>
+        
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="Buscar fotos...">
+            <button class="search-btn">Buscar</button>
+        </div>
+        
+        <div class="gallery-tabs">
+            <button class="gallery-tab-btn active" data-category="all">Todas</button>
+            <button class="gallery-tab-btn" data-category="eventos">Eventos</button>
+            <button class="gallery-tab-btn" data-category="capacitaciones">Capacitaciones</button>
+            <button class="gallery-tab-btn" data-category="proyectos">Proyectos</button>
+            <button class="gallery-tab-btn" data-category="asambleas">Asambleas</button>
+        </div>
+        
+        <div class="gallery-grid">
+            <!-- Foto 1 -->
+            <div class="gallery-item" data-category="eventos">
+                <img src="uploads/congreso.jpg" alt="Congreso de Topografía" class="gallery-img">
+                <div class="gallery-overlay">
+                    <h3 class="gallery-title">Congreso Internacional 2024</h3>
+                    <p class="gallery-date">24 de Abril, 2024</p>
+                </div>
+            </div>
+            
+            <!-- Foto 2 -->
+            <div class="gallery-item" data-category="capacitaciones">
+                <img src="uploads/drones.jpg" alt="Curso de Drones" class="gallery-img">
+                <div class="gallery-overlay">
+                    <h3 class="gallery-title">Capacitación en Fotogrametría</h3>
+                    <p class="gallery-date">15 de Enero, 2024</p>
+                </div>
+            </div>
+            
+            <!-- Foto 3 -->
+            <div class="gallery-item" data-category="proyectos">
+                <img src="uploads/proy1.jpg" alt="Proyecto Vial" class="gallery-img">
+                <div class="gallery-overlay">
+                    <h3 class="gallery-title">Proyecto de Pavimentación</h3>
+                    <p class="gallery-date">10 de Marzo, 2024</p>
+                </div>
+            </div>
+            
+            <!-- Foto 4 -->
+            <div class="gallery-item" data-category="asambleas">
+                <img src="uploads/somoa.jpg" alt="Asamblea General" class="gallery-img">
+                <div class="gallery-overlay">
+                    <h3 class="gallery-title">Asamblea General Ordinaria</h3>
+                    <p class="gallery-date">5 de Abril, 2024</p>
+                </div>
+            </div>
+            
+            <!-- Foto 5 -->
+            <div class="gallery-item" data-category="eventos">
+                <img src="uploads/congreso.jpeg" alt="Seminario de Topografía" class="gallery-img">
+                <div class="gallery-overlay">
+                    <h3 class="gallery-title">Seminario de Tecnología SLAM</h3>
+                    <p class="gallery-date">9 de Junio, 2024</p>
+                </div>
+            </div>
+            
+            <!-- Foto 6 -->
+            <div class="gallery-item" data-category="capacitaciones">
+                <img src="uploads/modelado.jpg" alt="Curso de Modelado" class="gallery-img">
+                <div class="gallery-overlay">
+                    <h3 class="gallery-title">Curso de Modelado GNSS</h3>
+                    <p class="gallery-date">7 de Octubre, 2024</p>
+                </div>
+            </div>
+            
+            <!-- Foto 7 -->
+            <div class="gallery-item" data-category="proyectos">
+                <img src="uploads/proy2.jpeg" alt="Proyecto Catastral" class="gallery-img">
+                <div class="gallery-overlay">
+                    <h3 class="gallery-title">Levantamiento Catastral</h3>
+                    <p class="gallery-date">22 de Febrero, 2024</p>
+                </div>
+            </div>
+            
+            <!-- Foto 8 -->
+            <div class="gallery-item" data-category="proyectos">
+                <img src="uploads/proy3.jpeg" alt="Proyecto Minero" class="gallery-img">
+                <div class="gallery-overlay">
+                    <h3 class="gallery-title">Topografía Minera</h3>
+                    <p class="gallery-date">18 de Mayo, 2024</p>
+                </div>
+            </div>
+            
+            <!-- Foto 9 -->
+            <div class="gallery-item" data-category="eventos">
+                <img src="uploads/proy4.jpg" alt="Entrega de Equipos" class="gallery-img">
+                <div class="gallery-overlay">
+                    <h3 class="gallery-title">Entrega de Equipos</h3>
+                    <p class="gallery-date">30 de Marzo, 2024</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal para imágenes -->
+    <div id="imageModal" class="modal">
+        <span class="modal-close">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" class="modal-img" src="" alt="">
+            <div id="modalCaption" class="modal-caption"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Colegio de Topógrafos</h3>
+                    <p>Entidad encargada de agremiar, regular y representar a los profesionales en topografía del Departamento de La Paz, Bolivia.</p>
+                    <div class="social-links">
+                        <a href="#"><i>📱</i></a>
+                        <a href="#"><i>💻</i></a>
+                        <a href="#"><i>📹</i></a>
+                        <a href="#"><i>📧</i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="quienes-somos.html">Quiénes Somos</a></li>
+                        <li><a href="proyectos.html">Proyectos</a></li>
+                        <li><a href="noticia.html">Noticias</a></li>
+                        <li><a href="galeria.html">Galería</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Documentos</h3>
+                    <ul class="footer-links">
+                        <li><a href="documentos.html?tab=avisos">Avisos</a></li>
+                        <li><a href="documentos.html?tab=resoluciones">Resoluciones</a></li>
+                        <li><a href="documentos.html?tab=actas">Actas</a></li>
+                        <li><a href="documentos.html?tab=normativas">Normativas</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contacto</h3>
+                    <ul class="footer-links">
+                        <li><i>📌</i> Av. Arce N° 1234, La Paz</li>
+                        <li><i>📞</i> +591 2 1234567</li>
+                        <li><i>📱</i> +591 71234567</li>
+                        <li><i>✉️</i> contacto@topografoslapaz.org.bo</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2024 Colegio de Topógrafos del Departamento de La Paz - Bolivia. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Funcionalidad de las pestañas
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabBtns = document.querySelectorAll('.gallery-tab-btn');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remover clase active de todos los botones
+                    tabBtns.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Agregar clase active al botón clickeado
+                    this.classList.add('active');
+                    
+                    // Filtrar las imágenes
+                    const category = this.getAttribute('data-category');
+                    
+                    galleryItems.forEach(item => {
+                        if(category === 'all' || item.getAttribute('data-category') === category) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Modal para imágenes
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const modalCaption = document.getElementById('modalCaption');
+            const closeBtn = document.querySelector('.modal-close');
+            
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const imgSrc = this.querySelector('img').src;
+                    const imgAlt = this.querySelector('img').alt;
+                    const title = this.querySelector('.gallery-title').textContent;
+                    
+                    modal.style.display = 'flex';
+                    modalImg.src = imgSrc;
+                    modalImg.alt = imgAlt;
+                    modalCaption.textContent = title;
+                });
+            });
+            
+            closeBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            // Cerrar modal al hacer clic fuera de la imagen
+            modal.addEventListener('click', function(e) {
+                if(e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // Funcionalidad de búsqueda
+            const searchInput = document.querySelector('.search-input');
+            const searchBtn = document.querySelector('.search-btn');
+            
+            searchBtn.addEventListener('click', function() {
+                const searchTerm = searchInput.value.toLowerCase();
+                if(searchTerm.trim() === '') return;
+                
+                let found = false;
+                
+                galleryItems.forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    if(text.includes(searchTerm)) {
+                        item.style.display = 'block';
+                        found = true;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                if(!found) {
+                    alert('No se encontraron fotos con ese término de búsqueda');
+                }
+            });
+            
+            // Permitir buscar con Enter
+            searchInput.addEventListener('keyup', function(e) {
+                if(e.key === 'Enter') {
+                    searchBtn.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
